@@ -3,9 +3,8 @@
 import { RemainingComponent } from "@/components/RemainingComponent";
 import styles from "./page.module.scss";
 import { ChangeEvent, useState } from "react";
-import { MissionComponent } from "@/components/MissionComponent";
 
-export type MissionType =
+type MissionType =
   | "abductions"
   | "terror"
   | "research"
@@ -21,14 +20,14 @@ export type MissionStats = {
 };
 
 type CampaignInfo = {
-  year: string;
+  year: number;
   month: string;
   alienResources: number;
   alienResearch: number;
   threatLevel: number;
 };
 
-export type State = {
+type State = {
   campaignInfo: CampaignInfo;
   abductions: MissionStats;
   terror: MissionStats;
@@ -42,7 +41,7 @@ export type State = {
 
 const defaultState: State = {
   campaignInfo: {
-    year: "2016",
+    year: 2016,
     month: "march",
     alienResources: 0,
     alienResearch: 0,
@@ -118,13 +117,7 @@ export default function Home() {
           <h2>Campaign stats</h2>
           <div>
             <label htmlFor="year">Current year</label>
-            <select
-              value={state.campaignInfo.year}
-              onChange={(event) => {
-                state.campaignInfo.year = event.target.value;
-                setState(Object.assign({}, state));
-              }}
-            >
+            <select value={state.campaignInfo.year}>
               <option value="2016">2016</option>
               <option value="2017">2017</option>
               <option value="2018">2018</option>
@@ -134,14 +127,7 @@ export default function Home() {
           </div>
           <div>
             <label htmlFor="month">Current month</label>
-            <select
-              id="month"
-              value={state.campaignInfo.month}
-              onChange={(event) => {
-                state.campaignInfo.month = event.target.value;
-                setState(Object.assign({}, state));
-              }}
-            >
+            <select id="month" value={state.campaignInfo.month}>
               <option value="january">January</option>
               <option value="february">February</option>
               <option value="march">March</option>
@@ -160,21 +146,17 @@ export default function Home() {
             <label htmlFor="resources">Alien resources</label>
             <input
               id="resources"
-              type="number"
+              type="text"
               value={state.campaignInfo.alienResources}
-              onChange={(event) => {
-                state.campaignInfo.alienResources = Number(event.target.value);
-                setState(Object.assign({}, state));
-              }}
             />
           </div>
           <div>
             <span>Resource level</span>
-            <span>{Math.floor(state.campaignInfo.alienResources / 50)}</span>
+            <span>2</span>
           </div>
           <div>
             <span>Meld reward</span>
-            <span>{Math.floor(state.campaignInfo.alienResources / 10)}</span>
+            <span>5</span>
           </div>
           <div>
             <label htmlFor="research">Alien research</label>
@@ -195,12 +177,10 @@ export default function Home() {
         </div>
         <div>
           <h2>Mission table next month</h2>
-          <table className={styles.table}>
+          <table>
             <thead>
-              <tr>
-                <th>Type</th>
-                <th>Amount</th>
-              </tr>
+              <td>Type</td>
+              <td>Amount</td>
             </thead>
             <tbody>
               <tr>
@@ -239,72 +219,125 @@ export default function Home() {
           </table>
         </div>
       </div>
-      <div className={styles.missionTable}>
+      <div>
         <h2>Mission Table</h2>
-        <h3>Ground missions</h3>
         <div className={styles.grid}>
           <span>Type</span>
           <span>Potential</span>
           <span>Current</span>
           <span>Remaining</span>
 
-          <MissionComponent
-            id="abductions"
-            label="Abductions"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="abductions">Abductions</label>
+          <span>{state.abductions.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "abductions")}>+</button>
+            <input
+              id="abductions"
+              type="number"
+              value={state["abductions"].current}
+              onChange={(event) => onChange(event, "abductions")}
+            />
+            <button onClick={() => onClick("sub", "abductions")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.abductions} />
 
-          <MissionComponent
-            id="terror"
-            label="Terror"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="terror">Terror</label>
+          <span>{state.terror.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "terror")}>+</button>
+            <input
+              id="terror"
+              type="number"
+              value={state.terror.current}
+              onChange={(event) => onChange(event, "terror")}
+            />
+            <button onClick={() => onClick("sub", "terror")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.terror} />
 
-          <MissionComponent
-            id="council"
-            label="Council"
-            state={state}
-            onChange={onChange}
-          />
-        </div>
-        <h3>Airgame</h3>
-        <div className={styles.grid}>
-          <MissionComponent
-            id="scout"
-            label="Scout"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="research">Research</label>
+          <span>{state.research.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "research")}>+</button>
+            <input
+              id="research"
+              type="number"
+              value={state.research.current}
+              onChange={(event) => onChange(event, "research")}
+            />
+            <button onClick={() => onClick("sub", "research")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.research} />
 
-          <MissionComponent
-            id="hunt"
-            label="Hunt"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="scout">Scout</label>
+          <span>{state.scout.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "scout")}>+</button>
+            <input
+              id="scout"
+              type="number"
+              value={state.scout.current}
+              onChange={(event) => onChange(event, "scout")}
+            />
+            <button onClick={() => onClick("sub", "scout")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.scout} />
 
-          <MissionComponent
-            id="bomb"
-            label="Bomb"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="harvest">Harvest</label>
+          <span>{state.harvest.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "harvest")}>+</button>
+            <input
+              id="harvest"
+              type="number"
+              value={state.harvest.current}
+              onChange={(event) => onChange(event, "harvest")}
+            />
+            <button onClick={() => onClick("sub", "harvest")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.harvest} />
 
-          <MissionComponent
-            id="research"
-            label="Research"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="hunt">Hunt</label>
+          <span>{state.hunt.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "hunt")}>+</button>
+            <input
+              id="hunt"
+              type="number"
+              value={state.hunt.current}
+              onChange={(event) => onChange(event, "hunt")}
+            />
+            <button onClick={() => onClick("sub", "hunt")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.hunt} />
 
-          <MissionComponent
-            id="harvest"
-            label="Harvest"
-            state={state}
-            onChange={onChange}
-          />
+          <label htmlFor="bomb">Bomb</label>
+          <span>{state.bomb.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "bomb")}>+</button>
+            <input
+              id="bomb"
+              type="number"
+              value={state.bomb.current}
+              onChange={(event) => onChange(event, "bomb")}
+            />
+            <button onClick={() => onClick("sub", "bomb")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.bomb} />
+
+          <label htmlFor="council">Council</label>
+          <span>{state.council.potential}</span>
+          <div className={styles.inputRow}>
+            <button onClick={() => onClick("add", "council")}>+</button>
+            <input
+              id="council"
+              type="number"
+              value={state.council.current}
+              onChange={(event) => onChange(event, "council")}
+            />
+            <button onClick={() => onClick("sub", "council")}>-</button>
+          </div>
+          <RemainingComponent missionStats={state.council} />
         </div>
       </div>
     </main>
