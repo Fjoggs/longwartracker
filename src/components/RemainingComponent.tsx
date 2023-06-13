@@ -1,4 +1,5 @@
 import { MissionStats } from "@/app/page";
+import styles from "./remainingComponent.module.scss";
 
 type RemainingProps = {
   missionStats: MissionStats;
@@ -15,8 +16,11 @@ export const RemainingComponent = ({ missionStats }: RemainingProps) => {
 
   const color = remainingMissions === 0.5 ? "black" : "white";
   return (
-    <span style={{ backgroundColor, color }}>
-      {remainingMissions < 0 ? 0 : remainingMissions}
-    </span>
+    <input
+      style={{ backgroundColor, color }}
+      className={styles.input}
+      value={remainingMissions < 0 ? 0 : remainingMissions}
+      disabled
+    />
   );
 };

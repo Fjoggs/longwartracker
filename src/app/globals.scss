@@ -1,0 +1,64 @@
+$button-color: rgb(57, 75, 98);
+
+input {
+  border: 0;
+  text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+body {
+  background-color: rgb(30, 30, 30);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $button-color;
+  border: 0;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+input {
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(75, 75, 75);
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+select {
+  border-radius: 5px;
+  background-color: rgb(75, 75, 75);
+  border: 0;
+  color: white;
+  height: 30px;
+
+  &:focus {
+    outline: 1px solid orange;
+  }
+
+  &:focus-visible {
+    outline: 1px solid orange;
+  }
+
+  &:focus-within {
+    outline: 1px solid orange;
+  }
+
+  &:active {
+    outline: 1px solid orange;
+  }
+}

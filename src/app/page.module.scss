@@ -1,21 +1,45 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 100px;
   align-items: center;
   padding: 6rem;
+  padding-top: 0px;
   min-height: 100vh;
+  gap: 50px;
+
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 50px;
+
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+  }
 
   .flexRow {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
     align-items: center;
+    gap: 40px;
 
-    .table {
-      td {
-        :nth-of-type(2n) {
-          text-align: right;
+    .campaignInfo {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        select {
+          width: 40%;
         }
       }
     }
@@ -25,70 +49,137 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    gap: 20px;
   }
 
-  .campaignInfo {
+  .campaignStats {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    background-color: rgb(95, 46, 73);
-    padding: 25px;
+    background-color: rgb(51, 51, 51);
+    padding: 20px;
     border-radius: 14px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
+
+    .buttonRow {
+      display: flex;
+      margin-top: 20px;
+
+      button {
+        border-radius: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        align-self: flex-end;
+        height: 40px;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+
+      .secondaryButton {
+        background-color: transparent;
+        box-shadow: none;
+        color: rgb(111, 145, 189);
+        cursor: pointer;
+        width: 75px;
+
+        &:hover {
+          color: rgb(166, 189, 219);
+        }
+      }
+    }
 
     div {
       width: 100%;
       display: flex;
       gap: 10px;
       justify-content: space-between;
+
+      * {
+        width: 50%;
+      }
+    }
+
+    .hr {
+      width: 100%;
+      opacity: 0.1;
+    }
+
+    .doubleInput {
+      display: flex;
+      justify-content: center;
+      width: 50%;
+
+      input {
+        width: 50%;
+      }
+    }
+
+    input {
+      border-radius: 5px;
     }
   }
 
   .missionTable {
-    width: 600px;
+    max-width: 600px;
+
+    h2 {
+    }
+
+    .headerEdit {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      div {
+        font-size: 10px;
+        font-style: italic;
+        opacity: 0.5;
+
+        label {
+          cursor: pointer;
+          padding-right: 5px;
+        }
+
+        input {
+          width: 10px;
+          height: 10px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .table {
+    width: 100%;
+
+    :nth-child(n) {
+      padding-bottom: 10px;
+    }
+
+    td:nth-of-type(2n) {
+      text-align: end;
+    }
   }
 
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: repeat(5, 30px);
+    grid-template-rows: repeat(6, 30px);
+    // grid-template-rows: 30px 30px 10px 30px 10px 30px;
+    grid-row-gap: 10px;
     align-items: center;
 
-    :nth-child(n) {
-      height: 30px;
+    .centerAlign {
+      justify-self: center;
     }
 
-    .inputRow {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-      text-align: center;
-
-      input {
-        width: 100%;
-      }
-
-      button {
-        padding: 0;
-        width: 30px;
-        border: 0;
-        background-color: lightblue;
-        border-radius: 10px;
-        font-size: 30px;
-        text-align: center;
-
-        &:hover {
-          outline: 1px solid orange;
-        }
-
-        &:active {
-          opacity: 0.8;
-        }
-      }
-    }
-
-    input {
-      min-width: 20px;
+    .separator {
+      border-top: 2px solid rgba(255, 255, 255, 0.089);
+      border-radius: 10px;
+      grid-column: 1 / 5;
     }
   }
 }
