@@ -205,8 +205,6 @@ export default function Home() {
     } else {
       state.campaignInfo.month = monthTable[nextIndex];
     }
-    console.log("month", state.campaignInfo.month);
-    console.log("year", state.campaignInfo.year);
     let resourceLevel = Math.floor(state.campaignInfo.alienResources / 50);
     if (resourceLevel > 4) {
       resourceLevel = 4;
@@ -215,8 +213,21 @@ export default function Home() {
     if (threatIndex > 4) {
       threatIndex = 4;
     }
+
     state.campaignInfo.resourceLevel = resourceLevel;
     state.campaignInfo.threatIndex = threatIndex;
+
+    // Reset current months missions
+    state.abductions.current = 0;
+    state.terror.current = 0;
+    state.council.current = 0;
+    state.scout.current = 0;
+    state.hunt.current = 0;
+    state.bomb.current = 0;
+    state.research.current = 0;
+    state.harvest.current = 0;
+
+    // Next months missions
     const nextMonthMissions = missionArray[resourceLevel][threatIndex];
     state.abductions.potential = nextMonthMissions.abductions;
     state.terror.potential = nextMonthMissions.terror;
@@ -283,22 +294,21 @@ export default function Home() {
               state.disableEditing = !state.disableEditing;
               setState(Object.assign({}, state));
             }}
-          >
-            <label htmlFor="disableEditing">Manual edit</label>
-            <input
-              type="checkbox"
-              checked={!state.disableEditing}
-              id="disableEditing"
-              onChange={() => {
-                state.disableEditing = !state.disableEditing;
-                setState(Object.assign({}, state));
-              }}
-            ></input>
-          </div>
+          ></div>
         </div>
         <div className={styles.grid}>
           <span>Type</span>
-          <span>Potential</span>
+          <span className={styles.iconRow}>
+            Potential
+            <img
+              src="/pencil.svg"
+              className={styles.pencilIcon}
+              onClick={() => {
+                state.disableEditing = !state.disableEditing;
+                setState(Object.assign({}, state));
+              }}
+            />
+          </span>
           <span className={styles.centerAlign}>Current</span>
           <span className={styles.centerAlign}>Remaining</span>
 
@@ -502,6 +512,16 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+
+        <div>
+          <h2>Alien Research Milestones</h2>
+          {state.campaignInfo.alienResearch > 270 ? (
+            <span>Destroyer - Double plasma</span>
+          ) : null}
+          {state.campaignInfo.alienResearch > 330 ? (
+            <span>Fighter - Single plasma x 2</span>
+          ) : null}
         </div>
 
         <div style={{ display: state.showPreview, width: "100%" }}>

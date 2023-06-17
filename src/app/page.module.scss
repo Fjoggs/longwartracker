@@ -5,6 +5,9 @@
   padding: 6rem;
   padding-top: 0px;
   min-height: 100vh;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
   gap: 50px;
 
   header {
@@ -23,7 +26,7 @@
   .flexRow {
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     gap: 40px;
 
@@ -51,6 +54,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+    width: 100%;
   }
 
   .campaignStats {
@@ -123,10 +127,7 @@
   }
 
   .missionTable {
-    max-width: 600px;
-
-    h2 {
-    }
+    width: 100%;
 
     .headerEdit {
       display: flex;
@@ -180,6 +181,23 @@
       border-top: 2px solid rgba(255, 255, 255, 0.089);
       border-radius: 10px;
       grid-column: 1 / 5;
+    }
+  }
+}
+
+.iconRow {
+  display: flex;
+  align-items: center;
+
+  .pencilIcon {
+    cursor: pointer;
+    opacity: 0.5;
+    padding-left: 30px;
+    width: 15px;
+    height: 15px;
+
+    &:hover {
+      opacity: 0.7;
     }
   }
 }
