@@ -135,13 +135,13 @@ const monthTable: Month[] = [
 const LOCAL_STORAGE_KEY = "longWarTrackerState";
 
 export default function Home() {
+  const [state, setState] = useState<State>(defaultState);
+
   const getStateFromStorage = () => {
     const storedState = localStorage.getItem(LOCAL_STORAGE_KEY);
     const asState: State = storedState ? JSON.parse(storedState) : defaultState;
     return asState;
   };
-
-  const [state, setState] = useState<State>(getStateFromStorage());
 
   useEffect(() => {
     setState(getStateFromStorage());
