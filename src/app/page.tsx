@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.scss";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { MissionComponent } from "@/components/MissionComponent";
 import { Missions, missionArray } from "./state/missionTable";
 
@@ -132,8 +132,24 @@ const monthTable: Month[] = [
   "december",
 ];
 
+const LOCAL_STORAGE_KEY = "longWarTrackerState";
+
 export default function Home() {
-  const [state, setState] = useState<State>(defaultState);
+  const getStateFromStorage = () => {
+    const storedState = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const asState: State = storedState ? JSON.parse(storedState) : defaultState;
+    return asState;
+  };
+
+  const [state, setState] = useState<State>(getStateFromStorage());
+
+  useEffect(() => {
+    setState(getStateFromStorage());
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+  }, [state]);
 
   const onClick = (operation: "add" | "sub", id: MissionType) => {
     switch (operation) {
@@ -310,7 +326,7 @@ export default function Home() {
             />
           </span>
           <span className={styles.centerAlign}>Current</span>
-          <span className={styles.centerAlign}>Remaining</span>
+          <span className={styles.endAlign}>Remaining</span>
 
           <MissionComponent
             id="abductions"
@@ -321,8 +337,6 @@ export default function Home() {
             onClick={onClick}
           />
 
-          {/* <div className={styles.separator} /> */}
-
           <MissionComponent
             id="terror"
             label="Terror"
@@ -331,8 +345,6 @@ export default function Home() {
             onChangePotential={onChangePotential}
             onClick={onClick}
           />
-
-          {/* <div className={styles.separator} /> */}
 
           <MissionComponent
             id="council"
@@ -354,8 +366,6 @@ export default function Home() {
             onClick={onClick}
           />
 
-          {/* <div className={styles.separator} /> */}
-
           <MissionComponent
             id="hunt"
             label="Hunt"
@@ -364,8 +374,6 @@ export default function Home() {
             onChangePotential={onChangePotential}
             onClick={onClick}
           />
-
-          {/* <div className={styles.separator} /> */}
 
           <MissionComponent
             id="bomb"
@@ -376,8 +384,6 @@ export default function Home() {
             onClick={onClick}
           />
 
-          {/* <div className={styles.separator} /> */}
-
           <MissionComponent
             id="research"
             label="Research"
@@ -386,8 +392,6 @@ export default function Home() {
             onChangePotential={onChangePotential}
             onClick={onClick}
           />
-
-          {/* <div className={styles.separator} /> */}
 
           <MissionComponent
             id="harvest"
@@ -460,7 +464,7 @@ export default function Home() {
 
           <div className={styles.campaignInfo}>
             <div>
-              <label htmlFor="year">Current year</label>
+              <label htmlFor="year">Year</label>
               <select
                 value={state.campaignInfo.year}
                 onChange={(event) => {
@@ -476,7 +480,7 @@ export default function Home() {
               </select>
             </div>
             <div>
-              <label htmlFor="month">Current month</label>
+              <label htmlFor="month">Month</label>
               <select
                 id="month"
                 value={state.campaignInfo.month}
@@ -500,7 +504,11 @@ export default function Home() {
                 <option value="december">December</option>
               </select>
             </div>
-            <div style={{ cursor: "pointer" }} onClick={onClickSlingshot}>
+            <div
+              style={{ cursor: "pointer" }}
+              className={styles.checkbox}
+              onClick={onClickSlingshot}
+            >
               <label htmlFor="slingshot" style={{ cursor: "pointer" }}>
                 Slingshot DLC
               </label>
@@ -508,7 +516,6 @@ export default function Home() {
                 type="checkbox"
                 checked={state.campaignInfo.slingshotEnabled}
                 style={{ cursor: "pointer" }}
-                onChange={onClickSlingshot}
               />
             </div>
           </div>
