@@ -1,0 +1,25 @@
+$large-phone: 500px;
+$tablet-width: 768px;
+$desktop-width: 1150px;
+$large-width: 1400px;
+
+// Variables used elsewhere
+$max-text-width: 556px;
+
+@mixin largePhone {
+  @media (min-width: #{$large-phone}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}

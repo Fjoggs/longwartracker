@@ -523,12 +523,25 @@ export default function Home() {
 
         <div>
           <h2>Alien Research Milestones</h2>
-          {state.campaignInfo.alienResearch > 270 ? (
-            <span>Destroyer - Double plasma</span>
-          ) : null}
-          {state.campaignInfo.alienResearch > 330 ? (
-            <span>Fighter - Single plasma x 2</span>
-          ) : null}
+          <ul>
+            {state.campaignInfo.alienResearch > 270 ? (
+              <>
+                <li>Destroyer - Double plasma</li>
+                <li>
+                  Be more careful with Raiders in general at this point
+                  <ul>
+                    <li>
+                      Crit can deal 50% of Interceptor HP (without Armored
+                      Fighters)
+                    </li>
+                  </ul>
+                </li>
+              </>
+            ) : null}
+            {state.campaignInfo.alienResearch > 330 ? (
+              <li>Fighter - Single plasma x 2</li>
+            ) : null}
+          </ul>
         </div>
 
         <div style={{ display: state.showPreview, width: "100%" }}>
