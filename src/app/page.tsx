@@ -252,17 +252,15 @@ export default function Home() {
     state.harvest.potential = nextMonthMissions.harvest;
     state.hunt.potential = nextMonthMissions.hunt;
     state.bomb.potential = nextMonthMissions.bomb;
-    if (
-      state.campaignInfo.month === "may" ||
-      state.campaignInfo.month === "june" ||
-      state.campaignInfo.month === "july"
-    ) {
+    state.council.potential = nextMonthMissions.council;
+    if (isSpecialCouncilMonth(state.campaignInfo.month)) {
       state.council.potential = 2;
-    } else {
-      state.council.potential = nextMonthMissions.council;
     }
     setState(Object.assign({}, state));
   };
+
+  const isSpecialCouncilMonth = (month: string) =>
+    ["may", "june", "july"].includes(month) && state.campaignInfo.year === 2016;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>, id: MissionType) => {
     state[id].current = Number(event.target.value);
@@ -485,8 +483,12 @@ export default function Home() {
                 id="month"
                 value={state.campaignInfo.month}
                 onChange={(event) => {
-                  //@ts-expect-error
-                  state.campaignInfo.month = event.target.value;
+                  state.campaignInfo.month = event.target.value as Month;
+                  if (isSpecialCouncilMonth(state.campaignInfo.month)) {
+                    state.council.potential = 2;
+                  } else {
+                    state.council.potential = 1;
+                  }
                   setState(Object.assign({}, state));
                 }}
               >
@@ -516,6 +518,15 @@ export default function Home() {
                 type="checkbox"
                 checked={state.campaignInfo.slingshotEnabled}
                 style={{ cursor: "pointer" }}
+                onChange={(event) => {
+                  console.log("event", event.target.value);
+                  if (event.target.value === "on") {
+                    state.campaignInfo.slingshotEnabled = true;
+                  } else {
+                    state.campaignInfo.slingshotEnabled = false;
+                  }
+                  setState(Object.assign({}, state));
+                }}
               />
             </div>
           </div>
