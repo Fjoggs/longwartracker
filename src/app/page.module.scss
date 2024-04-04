@@ -245,3 +245,29 @@
     }
   }
 }
+
+.airgameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  .stance {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .airgame {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

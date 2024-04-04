@@ -7,9 +7,10 @@ export interface Missions {
   hunt: number;
   bomb: number;
   council: number;
+  infiltrate?: number;
 }
 
-const resourceLevel0 = [
+const resourceLevel0: Missions[] = [
   {
     abductions: 3.5,
     terror: 0,
@@ -221,7 +222,7 @@ const resourceLevel3 = [
   },
 ];
 
-const resourceLevel4 = [
+const resourceLevel4: Missions[] = [
   {
     abductions: 5,
     terror: 1,
@@ -231,6 +232,7 @@ const resourceLevel4 = [
     hunt: 0,
     bomb: 4,
     council: 1,
+    infiltrate: 1,
   },
   {
     abductions: 5,
@@ -241,6 +243,7 @@ const resourceLevel4 = [
     hunt: 1,
     bomb: 3,
     council: 1,
+    infiltrate: 1,
   },
   {
     abductions: 5,
@@ -251,6 +254,7 @@ const resourceLevel4 = [
     hunt: 2,
     bomb: 3,
     council: 1,
+    infiltrate: 1,
   },
   {
     abductions: 5,
@@ -261,6 +265,7 @@ const resourceLevel4 = [
     hunt: 3,
     bomb: 3,
     council: 1,
+    infiltrate: 1,
   },
   {
     abductions: 4.5,
@@ -271,6 +276,7 @@ const resourceLevel4 = [
     hunt: 4,
     bomb: 3,
     council: 1,
+    infiltrate: 1,
   },
 ];
 

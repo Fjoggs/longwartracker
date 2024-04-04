@@ -13,7 +13,8 @@ export type MissionType =
   | "harvest"
   | "hunt"
   | "bomb"
-  | "council";
+  | "council"
+  | "infiltrate";
 
 export type Month =
   | "january"
@@ -55,10 +56,21 @@ export type State = {
   hunt: MissionStats;
   bomb: MissionStats;
   council: MissionStats;
+  infiltrate: MissionStats;
   nextMonth: Missions;
   showPreview: "block" | "none";
   disableEditing: boolean;
+  airgame: Airgame;
 };
+
+export interface Airgame {
+  stance: Stance;
+  singlePlasma: number;
+  doublePlasma: number;
+  fusionLance: number;
+}
+
+type Stance = "defensive" | "balanced" | "aggressive";
 
 const defaultState: State = {
   campaignInfo: {
@@ -115,6 +127,16 @@ const defaultState: State = {
   },
   showPreview: "none",
   disableEditing: true,
+  airgame: {
+    stance: "defensive",
+    singlePlasma: 18,
+    doublePlasma: 25,
+    fusionLance: 30,
+  },
+  infiltrate: {
+    potential: 1,
+    current: 0,
+  },
 };
 
 const monthTable: Month[] = [
@@ -295,6 +317,43 @@ export default function Home() {
     setState(Object.assign({}, state));
   };
 
+  const setHitChance = (stance: Stance) => {
+    const baseValues = {
+      defensive: {
+        singlePlasma: 18,
+        doublePlasma: 25,
+        fusionLance: 30,
+      },
+      balanced: {
+        singlePlasma: 33,
+        doublePlasma: 40,
+        fusionLance: 45,
+      },
+      aggressive: {
+        singlePlasma: 48,
+        doublePlasma: 55,
+        fusionLance: 60,
+      },
+    };
+    const increases = Math.floor(state.campaignInfo.alienResearch / 30) * 2;
+    console.log("increases", increases);
+    state.airgame.stance = stance;
+    state.airgame.singlePlasma = checkForMaxHitChance(
+      baseValues[stance].singlePlasma + increases
+    );
+    state.airgame.doublePlasma = checkForMaxHitChance(
+      baseValues[stance].doublePlasma + increases
+    );
+    state.airgame.fusionLance = checkForMaxHitChance(
+      baseValues[stance].fusionLance + increases
+    );
+    setState(Object.assign({}, state));
+  };
+
+  const checkForMaxHitChance = (hitChance: number) => {
+    return hitChance > 95 ? 95 : hitChance;
+  };
+
   return (
     <main className={styles.main}>
       <header>
@@ -342,6 +401,7 @@ export default function Home() {
             onChange={onChange}
             onChangePotential={onChangePotential}
             onClick={onClick}
+            month={state.campaignInfo.month}
           />
 
           <MissionComponent
@@ -399,6 +459,17 @@ export default function Home() {
             onChangePotential={onChangePotential}
             onClick={onClick}
           />
+
+          {state.infiltrate ? (
+            <MissionComponent
+              id="infiltrate"
+              label="Infiltrate"
+              state={state}
+              onChange={onChange}
+              onChangePotential={onChangePotential}
+              onClick={onClick}
+            />
+          ) : null}
         </div>
       </div>
       <div className={styles.flexCol}>
@@ -414,6 +485,7 @@ export default function Home() {
                 onChange={(event) => {
                   state.campaignInfo.alienResearch = Number(event.target.value);
                   setState(Object.assign({}, state));
+                  setHitChance(state.airgame.stance);
                 }}
               />
             </div>
@@ -553,6 +625,40 @@ export default function Home() {
               <li>Fighter - Single plasma x 2</li>
             ) : null}
           </ul>
+        </div>
+
+        <div className={styles.airgameContainer}>
+          <h2>UFO chance to hit you</h2>
+          <div className={styles.stance}>
+            <label htmlFor="stance">Stance</label>
+            <select
+              id="stance"
+              value={state.airgame.stance}
+              onChange={(event) => {
+                const stance = event.target.value as Stance;
+                setHitChance(stance);
+              }}
+            >
+              <option value="defensive">Defensive</option>
+              <option value="balanced">Balanced</option>
+              <option value="aggressive">Aggressive</option>
+            </select>
+          </div>
+
+          <div className={styles.airgame}>
+            <div>
+              <div>Single plasma</div>
+              <div>{state.airgame.singlePlasma}%</div>
+            </div>
+            <div>
+              <div>Double plasma</div>
+              <div>{state.airgame.doublePlasma}%</div>
+            </div>
+            <div>
+              <div>Fusion lance</div>
+              <div>{state.airgame.fusionLance}%</div>
+            </div>
+          </div>
         </div>
 
         <div style={{ display: state.showPreview, width: "100%" }}>

@@ -9,6 +9,17 @@ export type InputComponentProps = {
   onChange: Function;
   onChangePotential: Function;
   onClick: Function;
+  month?: string;
+};
+
+const specialTerror = (label: string, month?: string) => {
+  if (month === "june" && label === "Terror") {
+    return "Terror (Zombie)";
+  } else if (month === "october" && label === "Terror") {
+    return "Terror (Queen Lid)";
+  } else {
+    return label;
+  }
 };
 
 export const MissionComponent = ({
@@ -18,9 +29,10 @@ export const MissionComponent = ({
   onChange,
   onChangePotential,
   onClick,
+  month,
 }: InputComponentProps) => (
   <>
-    <label htmlFor={id}>{label}</label>
+    <label htmlFor={id}>{specialTerror(label, month)}</label>
     <input
       value={state[id].potential}
       disabled={state.disableEditing}
